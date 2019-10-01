@@ -1,13 +1,16 @@
 package com.example.pdfviewer;
 
+import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.listener.OnRenderListener;
-import com.github.barteksc.pdfviewer.util.FitPolicy;
+import com.tom_roush.pdfbox.multipdf.PDFMergerUtility;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     PDFView pdfView;
@@ -19,63 +22,62 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         pdfView = findViewById(R.id.pdfView);
-        pdfView2 = findViewById(R.id.pdfView2);
+//        pdfView2 = findViewById(R.id.pdfView2);
 
-        PDFView.Configurator configurator = pdfView.fromAsset("pdf5pages.pdf")
-            .pages(0,1,2)
-            .onRender(new OnRenderListener() {
-                @Override
-                public void onInitiallyRendered(int nbPages) {
-                    Log.i("RenderListener", "onInitiallyRendered: " + nbPages);
-                }
-            })
-            .pageFitPolicy(FitPolicy.HEIGHT);
-
-
-            configurator.load();
-
-        pdfView2.fromAsset("pdf2pages.pdf")
-            .pages(0,1)
-            .onRender(new OnRenderListener() {
-                @Override
-                public void onInitiallyRendered(int nbPages) {
-                    Log.i("RenderListener", "onInitiallyRendered: " + nbPages);
-                }
-            })
-            .pageFitPolicy(FitPolicy.HEIGHT)
-            .load();
-
-//        File file = null;
-//        try {
-//            file = combinePdf();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+//        PDFView.Configurator configurator = pdfView.fromAsset("pdf5pages.pdf")
+//            .pages(0,1,2)
+//            .onRender(new OnRenderListener() {
+//                @Override
+//                public void onInitiallyRendered(int nbPages) {
+//                    Log.i("RenderListener", "onInitiallyRendered: " + nbPages);
+//                }
+//            })
+//            .pageFitPolicy(FitPolicy.HEIGHT);
 //
-//        if (file != null){
-//            pdfView.fromFile(file).load();
-//        }
+//
+//            configurator.load();
+//
+//        pdfView2.fromAsset("pdf2pages.pdf")
+//            .pages(0,1)
+//            .onRender(new OnRenderListener() {
+//                @Override
+//                public void onInitiallyRendered(int nbPages) {
+//                    Log.i("RenderListener", "onInitiallyRendered: " + nbPages);
+//                }
+//            })
+//            .pageFitPolicy(FitPolicy.HEIGHT)
+//            .load();
+
+        File file = null;
+        try {
+            file = combinePdf();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (file != null){
+            pdfView.fromFile(file).load();
+        }
 
     }
 
-//    private File combinePdf() throws IOException {
-//        PDFMergerUtility utility = new PDFMergerUtility();
-//
-//        AssetManager manager = this.getAssets();
-//
-//        utility.addSource(manager.open("pdf5pages.pdf"));
-//        utility.addSource(manager.open("pdf2pages.pdf"));
-//
-//        final File file = new File(getExternalCacheDir(), System.currentTimeMillis() + ".pdf");
-//        final FileOutputStream fileOutputStream = new FileOutputStream(file);
-//
-//        try {
-//            utility.setDestinationStream(fileOutputStream);
-//            utility.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
-//        } finally {
-//            fileOutputStream.close();
-//        }
-//
-//        return file;
-//    }
+    private File combinePdf() throws IOException {
+        PDFMergerUtility utility = new PDFMergerUtility();
+
+        AssetManager manager = this.getAssets();
+
+        utility.addSource(manager.open("pdf5pages.pdf"));
+        utility.addSource(manager.open("pdf2pages.pdf"));
+
+        final File file = new File(getExternalCacheDir(), System.currentTimeMillis() + ".pdf");
+        final FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+
+        utility.setDestinationStream(fileOutputStream);
+        utility.mergeDocuments(true);
+
+        fileOutputStream.close();
+
+        return file;
+    }
 }
