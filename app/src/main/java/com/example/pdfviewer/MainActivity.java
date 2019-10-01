@@ -1,10 +1,12 @@
 package com.example.pdfviewer;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,12 +21,27 @@ public class MainActivity extends AppCompatActivity {
         pdfView = findViewById(R.id.pdfView);
         pdfView2 = findViewById(R.id.pdfView2);
 
-        pdfView.fromAsset("pdf5pages.pdf")
-            .pages(0)
-            .pageFitPolicy(FitPolicy.HEIGHT)
-            .load();
+        PDFView.Configurator configurator = pdfView.fromAsset("pdf5pages.pdf")
+            .pages(0,1,2)
+            .onRender(new OnRenderListener() {
+                @Override
+                public void onInitiallyRendered(int nbPages) {
+                    Log.i("RenderListener", "onInitiallyRendered: " + nbPages);
+                }
+            })
+            .pageFitPolicy(FitPolicy.HEIGHT);
 
-        pdfView2.fromAsset("pdf2pages.pdf").pages(0)
+
+            configurator.load();
+
+        pdfView2.fromAsset("pdf2pages.pdf")
+            .pages(0,1)
+            .onRender(new OnRenderListener() {
+                @Override
+                public void onInitiallyRendered(int nbPages) {
+                    Log.i("RenderListener", "onInitiallyRendered: " + nbPages);
+                }
+            })
             .pageFitPolicy(FitPolicy.HEIGHT)
             .load();
 
