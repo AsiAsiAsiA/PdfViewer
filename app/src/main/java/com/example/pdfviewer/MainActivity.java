@@ -15,7 +15,6 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     PDFView pdfView;
-    PDFView pdfView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,22 +22,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         pdfView = findViewById(R.id.pdfView);
-//        pdfView2 = findViewById(R.id.pdfView2);
-
-//        pdfView.fromAsset("pdf5pages.pdf")
-//            .pageFitPolicy(FitPolicy.HEIGHT)
-//            .load();
-
-        //        pdfView2.fromAsset("pdf2pages.pdf")
-//            .pages(0,1)
-//            .onRender(new OnRenderListener() {
-//                @Override
-//                public void onInitiallyRendered(int nbPages) {
-//                    Log.i("RenderListener", "onInitiallyRendered: " + nbPages);
-//                }
-//            })
-//            .pageFitPolicy(FitPolicy.HEIGHT)
-//            .load();
 
         File file = null;
         try {
@@ -65,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
         final File file = new File(getExternalCacheDir(), System.currentTimeMillis() + ".pdf");
         final FileOutputStream fileOutputStream = new FileOutputStream(file);
-
 
         utility.setDestinationStream(fileOutputStream);
         utility.mergeDocuments(true);
