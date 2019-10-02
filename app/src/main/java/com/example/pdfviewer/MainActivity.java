@@ -48,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (file != null) {
-            pdfView.fromFile(file).load();
+            pdfView.fromFile(file)
+                .spacing(5)
+                .load();
         }
     }
 
