@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.tom_roush.pdfbox.multipdf.PDFMergerUtility;
 
 import java.io.File;
@@ -24,20 +25,11 @@ public class MainActivity extends AppCompatActivity {
         pdfView = findViewById(R.id.pdfView);
 //        pdfView2 = findViewById(R.id.pdfView2);
 
-//        PDFView.Configurator configurator = pdfView.fromAsset("pdf5pages.pdf")
-//            .pages(0,1,2)
-//            .onRender(new OnRenderListener() {
-//                @Override
-//                public void onInitiallyRendered(int nbPages) {
-//                    Log.i("RenderListener", "onInitiallyRendered: " + nbPages);
-//                }
-//            })
-//            .pageFitPolicy(FitPolicy.HEIGHT);
-//
-//
-//            configurator.load();
-//
-//        pdfView2.fromAsset("pdf2pages.pdf")
+//        pdfView.fromAsset("pdf5pages.pdf")
+//            .pageFitPolicy(FitPolicy.HEIGHT)
+//            .load();
+
+        //        pdfView2.fromAsset("pdf2pages.pdf")
 //            .pages(0,1)
 //            .onRender(new OnRenderListener() {
 //                @Override
@@ -55,12 +47,12 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (file != null){
+        if (file != null) {
             pdfView.fromFile(file).load();
         }
-
     }
 
+    //Метод соединяет 2 pdf файла в 1
     private File combinePdf() throws IOException {
         PDFMergerUtility utility = new PDFMergerUtility();
 
