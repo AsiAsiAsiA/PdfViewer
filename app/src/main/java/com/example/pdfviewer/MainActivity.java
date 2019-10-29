@@ -2,11 +2,14 @@ package com.example.pdfviewer;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.util.FitPolicy;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+import com.github.barteksc.pdfviewer.listener.OnPageScrollListener;
 import com.tom_roush.pdfbox.multipdf.PDFMergerUtility;
 
 import java.io.File;
@@ -15,6 +18,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     PDFView pdfView;
+    Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         pdfView = findViewById(R.id.pdfView);
+        btn = findViewById(R.id.btn);
 
         File file = null;
         try {
@@ -33,6 +38,21 @@ public class MainActivity extends AppCompatActivity {
         if (file != null) {
             pdfView.fromFile(file)
                 .spacing(5)
+                .onPageChange(new OnPageChangeListener() {
+                    @Override
+                    public void onPageChanged(int page, int pageCount) {
+//                        Log.i("pdfView", String.format("page: %s,  pageCount: %s",page,pageCount));
+                    }
+                })
+                .onPageScroll(new OnPageScrollListener() {
+                    @Override
+                    public void onPageScrolled(int page, float positionOffset) {
+                        Log.i("pdfView", String.format("page: %s,  positionOffset: %f",page,positionOffset));
+                        if (positionOffset == 1){
+                            btn.setEnabled(true);
+                        }
+                    }
+                })
                 .load();
         }
     }

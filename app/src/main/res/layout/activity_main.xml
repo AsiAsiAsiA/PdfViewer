@@ -15,4 +15,15 @@
 		android:layout_height="match_parent"
 		/>
 
+	<Button
+		android:id="@+id/btn"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/colorAccent"
+		android:text="Я прочитал"
+		android:layout_margin="10dp"
+		android:enabled="false"
+		app:layout_constraintBottom_toBottomOf="parent"
+		/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
